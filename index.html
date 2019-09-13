@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head> 
 	<title>Sleuth</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="style.css">
@@ -27,11 +27,11 @@
 	<section>
 		<div id="enterGuestNames" class="containerfluid container hide">
 			<div class="row justify-content-center mt-5">
-				<h2 class="pr-3">
+				<h2 id="guestH1" class="pr-3">
 					Enter 
 					<span id="guestCounter">7</span> 
 					guest names</h2>
-				<input id="addGuest" type="text">
+				<input id="addGuest" type="text" placeholder="" required>
 				<button id="guestNameBtn" class="btn btn-primary">OK</button>
 			</div>
 			<div class="row justify-content-center mt-5">
@@ -41,9 +41,29 @@
 				<button id = "continue1" class= "btn btn-info hide">Continue</button>
 			</div>
 		</div>
-
-
 	</section>
+
+    <section>
+        <div id ="murderDiv" class="containerfluid container hide">
+            <div class="row justify-content-center mt-5">
+                <h2 id="declarationOfMurder"></h2>
+            </div>
+            <div class="row justify-content-center mt-5">
+            	<form id="roomChoice">
+            		<input type="radio" id="lounge" name="rooms" value="lounge">
+                	<label for="lounge">Lounge</label>
+
+                	
+                	<input type="radio" id="diningRoom" name="rooms" value="diningRoom">
+                	<label for="diningRoom">Dining Room</label>
+
+                	<button id="test" type="submit">TEST</button>
+                </form>
+
+            </div>
+
+        </div>
+    </section>
 
 
 
