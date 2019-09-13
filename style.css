@@ -1,0 +1,16 @@
+body {
+	background-color: #232333;
+	color: #e0e0e0;
+}
+
+.hide {
+	display: none;
+}
+
+.show {
+	display: block;
+}
+
+#header {
+	background-color: #232323;
+}
