@@ -2,7 +2,20 @@ var numOfGuestNames = 7;
 var originalGuestList = [];
 var murderedGuest = "";
 var murderer = "";
+var murderWeapon = "";
 var guestList = [];
+var roomGuest = "";
+var roomGuestPair = "";
+var weaponsList = ["candlestick", "rope", "lead pipe", "wrench", "revolver", "knife"];
+var roomWeaponsList = [];
+var roomsObject = {
+	lounge: "",
+	diningRoom: "",
+	kitchen: ""
+}
+var guestPairs = [];
+
+
 
 var startButton = document.querySelector("#startButton");
 var resetButton = document.querySelector("#resetButton");
@@ -14,8 +27,13 @@ var cont1Btn = document.querySelector("#continue1");
 var murderDiv = document.querySelector("#murderDiv");
 var declarationOfMurder = document.querySelector("#declarationOfMurder");
 var guestCounter = document.querySelector("#guestCounter");
-var guestH1 = document.querySelector("#guestH1")
-var testBtn = document.querySelector("#test")
+var guestH1 = document.querySelector("#guestH1");
+var testBtn = document.querySelector("#test");
+var loungeBtn = document.querySelector("#loungeBtn");
+var room = document.querySelector("#room");
+var roomDescription = document.querySelector("#roomDescription");
+var goBack = document.querySelector("#goBack");
+var question = document.querySelector("#question");
 
 
 
@@ -24,7 +42,7 @@ startButton.addEventListener("click", function(){
 	this.classList.add("hide");
 	resetButton.classList.remove("hide");
 	toggleHide(enterGuestNames);
-
+	weaponAssignments();
 });
 
 resetButton.addEventListener("click", function(){
@@ -47,14 +65,45 @@ addGuest.addEventListener('keypress', function(e){
 });
 
 
-//adds functionality to first continue button
+//adds functionality to first continue button chooses murderer victim and weapon
 cont1Btn.addEventListener("click", function(){
     toggleHide(cont1Btn);
     toggleHide(enterGuestNames);
     toggleHide(murderDiv);
     chooseMurder();
+    murderWeapon = randomizeWeapon();
+    assignInitGuestPairings();
     declarationOfMurder.textContent = "You stand in front of the estate of the late " + murderedGuest + ". Where would you like to go?";
 });
+
+
+//goes to lounge
+loungeBtn.addEventListener("click", function(){
+	toggleHide(room);
+	toggleHide(roomChoice);
+	toggleHide(declarationOfMurder);
+	randomizeRoomGuest();
+	roomDescription.textContent = "You have entered the Lounge. You see " + roomGuest + " lurking in the corner. The " + roomsObject.lounge + " lies on the table.";
+})
+
+//back button to room select
+goBack.addEventListener("click", function(){
+	toggleHide(roomChoice);
+	toggleHide(room);
+	toggleHide(declarationOfMurder);
+	declarationOfMurder.textContent = "Where would you like to go now?";
+})
+
+//question suspect button
+question.addEventListener("click", function(){
+	if (roomGuest !== "no one"){
+		getPair();
+		roomDescription.textContent = roomGuest + " turns to you and says: \"I was with " + roomGuestPair + " the entire night. Not that it's any of your business.\"";
+	} else {
+		roomDescription.textContent = "There is no one to question.";
+	}
+})
+
 
 // testBtn.addEventListener("click", function(e){
 // 	e.preventDefault();
@@ -62,17 +111,99 @@ cont1Btn.addEventListener("click", function(){
 // })
 
 // document.querySelector("#roomChoice").onsubmit = function(){
-	
+
 // }
 
 
 
 //chooses someone to be murdered and a murderer
 function chooseMurder () {
-    murderedGuest = originalGuestList[Math.floor(Math.random() * 8)];
+    murderedGuest = originalGuestList[Math.floor(Math.random() * originalGuestList.length)];
     guestList = originalGuestList.filter(f => f !== murderedGuest);
-    murderer = guestList[Math.floor(Math.random() * 7)];
+    murderer = guestList[Math.floor(Math.random() * guestList.length)];
 }
+
+//randomly assigns guest to a room
+function randomizeRoomGuest (){
+	roomGuest = guestList[Math.floor(Math.random() * 10)];
+	if (roomGuest === undefined){
+		roomGuest = "no one";
+	}
+}
+
+//randomize weapon
+function randomizeWeapon(){
+	return weaponsList[Math.floor(Math.random() * weaponsList.length)];
+}
+
+//randomize remaining weapons after filtering out for each room
+function randomizeRemainingWeapons(){
+	return roomWeaponsList[Math.floor(Math.random() * (roomWeaponsList.length))];
+}
+
+//assigns rooms and cooresponding weapons to an object variable
+function weaponAssignments (){
+	var currentWeapon = randomizeWeapon();
+	roomsObject.lounge = currentWeapon;
+	roomWeaponsList = weaponsList.filter(f => f !== currentWeapon);
+	currentWeapon = randomizeRemainingWeapons();
+	roomsObject.diningRoom = currentWeapon;
+	roomWeaponsList = weaponsList.filter(f => f !== currentWeapon);
+	currentWeapon = randomizeRemainingWeapons();
+	roomsObject.kitchen  = currentWeapon;
+	roomWeaponsList = weaponsList.filter(f => f !== currentWeapon);
+
+}
+
+
+//pairs up guests
+function assignInitGuestPairings(){
+	//creates an array without the murderer
+	var notMurderer = guestList.filter(f => f !== murderer);
+
+	//pick random guest to be alone and remove them from array
+	var lonelyGuest = notMurderer[Math.floor(Math.random() * notMurderer.length)];
+	var onlyPairs = notMurderer.filter(f => f !== lonelyGuest);
+
+	//creates nested arrays inside of guestPairs that contain each innocent guest and a nonesense value
+	guestPairs.push([onlyPairs[0], "230492358208sa0df83020fj8302"]);
+	guestPairs.push([onlyPairs[1], "230492358208sa0df83020fj8302"]);
+
+	//gets rid of first two values in the array so they can be appropriately matched
+	onlyPairs.splice(0, 2);
+
+	//randomly chooses a remaining guest and matches them up
+	var randoGuest = onlyPairs[Math.floor(Math.random() * onlyPairs.length)];
+	guestPairs[0][1] = randoGuest;
+	var lastValue = onlyPairs.filter(f => f !== guestPairs[0][1]);
+	guestPairs[1][1] = lastValue[0];
+
+
+	//assigns lonely guest to the value of "alone"
+	guestPairs.push([lonelyGuest, "alone"]);
+
+	//assigns the murderer a random partner
+	guestPairs.push([murderer, notMurderer[Math.floor(Math.random() * notMurderer.length)]]);
+
+}
+
+//retrieves appropriate pair from the guestPairs array
+function getPair(){
+	for (var i=0; i<3; i++){
+		if (roomGuest === guestPairs[i][0]){
+			if (guestPairs[i][1] != "alone"){
+				roomGuestPair = guestPairs[i][1];
+			} else {
+				roomGuestPair = "only myself";
+			}
+		} else if (roomGuest === guestPairs[i][1]){
+			roomGuestPair = guestPairs[i][0];
+		} else if (roomGuest === murderer){
+			roomGuestPair = guestPairs[3][1];
+		}
+	}
+}
+
 
 
 //toggles the hide class

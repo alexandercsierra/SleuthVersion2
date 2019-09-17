@@ -49,20 +49,29 @@
                 <h2 id="declarationOfMurder"></h2>
             </div>
             <div class="row justify-content-center mt-5">
-            	<form id="roomChoice">
-            		<input type="radio" id="lounge" name="rooms" value="lounge">
-                	<label for="lounge">Lounge</label>
-
-                	
-                	<input type="radio" id="diningRoom" name="rooms" value="diningRoom">
-                	<label for="diningRoom">Dining Room</label>
-
-                	<button id="test" type="submit">TEST</button>
-                </form>
-
+            	<div id="roomChoice">
+            		<button id="loungeBtn" class="btn btn-secondary">Lounge</button>
+            		<button id="diningRoomBtn" class="btn btn-secondary">Dining Room</button>
+            		<button id="ktichenBtn" class="btn btn-secondary">Kitchen</button>
+            	</div>
             </div>
 
         </div>
+    </section>
+
+    <!-- LOUNGE -->
+    <section>
+    	<div id="room" class="containerfluid container hide">
+    		<div class="row justify-content-center mt-5">
+    			<h2 id="roomDescription"></h2>
+    		</div>
+    		<div class="row justify-content-around mt-5">
+    			<button id = "question" class="btn btn-secondary">Question Suspect</button>
+    			<button id = "examineWeapon" class="btn btn-secondary">Examine Weapon</button>
+    			<button id = "examineFloor" class="btn btn-secondary">Examine Floor</button>
+    			<button id = "goBack" class="btn btn-secondary">Go Back</button>
+    		</div>
+    	</div>
     </section>
 
 
