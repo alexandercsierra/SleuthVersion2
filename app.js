@@ -3,17 +3,20 @@ var originalGuestList = [];
 var murderedGuest = "";
 var murderer = "";
 var murderWeapon = "";
+var murderRoom = "";
 var guestList = [];
 var roomGuest = "";
 var roomGuestPair = "";
+var roomsList = ["Lounge", "Dining Room", "Kitchen", "Ballroom", "Conservatory", "Billiard Room", "Library", "Study", "Hall"];
 var weaponsList = ["candlestick", "rope", "lead pipe", "wrench", "revolver", "knife"];
+var randomWeaponsList = [];
 var roomWeaponsList = [];
-var roomsObject = {
-	lounge: "",
-	diningRoom: "",
-	kitchen: ""
-}
+var currentRoom = "";
+var currentWeapon = "";
 var guestPairs = [];
+var clickCount = 0;
+var floorStatus = "";
+var userFinalAnswer = [];
 
 
 
@@ -30,10 +33,22 @@ var guestCounter = document.querySelector("#guestCounter");
 var guestH1 = document.querySelector("#guestH1");
 var testBtn = document.querySelector("#test");
 var loungeBtn = document.querySelector("#loungeBtn");
+var diningRoomBtn = document.querySelector("#diningRoomBtn");
+var kitchenBtn = document.querySelector("#kitchenBtn");
 var room = document.querySelector("#room");
 var roomDescription = document.querySelector("#roomDescription");
 var goBack = document.querySelector("#goBack");
 var question = document.querySelector("#question");
+var examineWeapon = document.querySelector("#examineWeapon");
+var examineFloor = document.querySelector("#examineFloor");
+var stalker = document.querySelector("#stalker");
+var suspicious = document.querySelector("#suspicious");
+var accuseBtn = document.querySelector("#accuseBtn");
+var accuse = document.querySelector("#accuse");
+var finalAccusation = document.querySelector("#finalAccusation");
+var finalAccusationSection = document.querySelector("#finalAccusationSection");
+var whoIsMurderer = document.querySelector("#whoIsMurderer");
+var whoIsMurdererBtn = document.querySelector("#whoIsMurdererBtn");
 
 
 
@@ -43,6 +58,7 @@ startButton.addEventListener("click", function(){
 	resetButton.classList.remove("hide");
 	toggleHide(enterGuestNames);
 	weaponAssignments();
+	murderRoom = roomsList[5];
 });
 
 resetButton.addEventListener("click", function(){
@@ -77,33 +93,80 @@ cont1Btn.addEventListener("click", function(){
 });
 
 
+//click button to input final accusation
+accuseBtn.addEventListener("click", function(){
+	toggleHide(accuse);
+	toggleHide(finalAccusation);
+});
+
+whoIsMurderer.addEventListener('keypress', function(e){
+	if (e.key === 'Enter'){
+		if (userFinalAnswer[0] = undefined){
+			userFinalAnswer.push(whoIsMurderer.value);
+		}
+	}
+});
+
+
 //goes to lounge
 loungeBtn.addEventListener("click", function(){
-	toggleHide(room);
-	toggleHide(roomChoice);
-	toggleHide(declarationOfMurder);
-	randomizeRoomGuest();
-	roomDescription.textContent = "You have entered the Lounge. You see " + roomGuest + " lurking in the corner. The " + roomsObject.lounge + " lies on the table.";
-})
+	currentRoom = "Lounge";
+	enterRoom();
+	roomDescription.textContent = "You have entered the Lounge. You see " + roomGuest + " lurking in the corner. The " + currentWeapon + " lies on the table.";
+});
+
+//goes to diningRoom
+diningRoomBtn.addEventListener("click", function(){
+	currentRoom = "Dining Room";
+	enterRoom();
+	roomDescription.textContent = "You have entered the Dining Room. You see " + roomGuest + " snacking on some leftovers. The " + currentWeapon + " lies on the table.";
+});
+
+//goes to Kitchen
+kitchenBtn.addEventListener("click", function(){
+	currentRoom = "Kitchen";
+	enterRoom();
+	roomDescription.textContent = "You have entered the kitchen. You see " + roomGuest + " in the pale light of the open refrigerator rummaging. The " + currentWeapon + " lies on the counter.";
+});
 
 //back button to room select
 goBack.addEventListener("click", function(){
+	clickCount++;
 	toggleHide(roomChoice);
 	toggleHide(room);
-	toggleHide(declarationOfMurder);
-	declarationOfMurder.textContent = "Where would you like to go now?";
+	toggleHide(murderDiv);
+	declarationOfMurder.textContent = "You stand at the estate of " + murderedGuest + ". Where would you like to go now?";
+	if (clickCount > 15) {
+		finalAccusationSection.classList.remove("hide");
+	}
 })
 
 //question suspect button
 question.addEventListener("click", function(){
+	clickCount++;
 	if (roomGuest !== "no one"){
 		getPair();
 		roomDescription.textContent = roomGuest + " turns to you and says: \"I was with " + roomGuestPair + " the entire night. Not that it's any of your business.\"";
 	} else {
 		roomDescription.textContent = "There is no one to question.";
 	}
-})
+});
 
+examineWeapon.addEventListener("click", function(){
+	clickCount++;
+	if (currentWeapon !== murderWeapon && currentWeapon !== "q-w34095-340958-sdf0983f"){
+		roomDescription.textContent = "You have examined the " + currentWeapon + ". Nothing suspicious about it."; 
+	} else if (currentWeapon === murderWeapon){
+		roomDescription.textContent = "There's blood on it! This must be the murder weapon!";
+	} else if (currentWeapon === "q-w34095-340958-sdf0983f"){
+		roomDescription.textContent = "There's no weapon to examine";
+	}
+});
+
+examineFloor.addEventListener("click", function(){
+	clickCount++;
+	roomDescription.textContent = floorStatus;
+})
 
 // testBtn.addEventListener("click", function(e){
 // 	e.preventDefault();
@@ -123,6 +186,7 @@ function chooseMurder () {
     murderer = guestList[Math.floor(Math.random() * guestList.length)];
 }
 
+
 //randomly assigns guest to a room
 function randomizeRoomGuest (){
 	roomGuest = guestList[Math.floor(Math.random() * 10)];
@@ -141,17 +205,39 @@ function randomizeRemainingWeapons(){
 	return roomWeaponsList[Math.floor(Math.random() * (roomWeaponsList.length))];
 }
 
-//assigns rooms and cooresponding weapons to an object variable
-function weaponAssignments (){
-	var currentWeapon = randomizeWeapon();
-	roomsObject.lounge = currentWeapon;
-	roomWeaponsList = weaponsList.filter(f => f !== currentWeapon);
-	currentWeapon = randomizeRemainingWeapons();
-	roomsObject.diningRoom = currentWeapon;
-	roomWeaponsList = weaponsList.filter(f => f !== currentWeapon);
-	currentWeapon = randomizeRemainingWeapons();
-	roomsObject.kitchen  = currentWeapon;
-	roomWeaponsList = weaponsList.filter(f => f !== currentWeapon);
+//randomizes the entire weapons list to then be assigned to a room
+function randomizeWeaponList(){
+	for (let i = weaponsList.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
+    // swap elements array[i] and array[j]
+    // same can be written as:
+    // let t = array[i]; array[i] = array[j]; array[j] = t
+    [weaponsList[i], weaponsList[j]] = [weaponsList[j], weaponsList[i]];
+  }
+}
+
+//randomizes the entire rooms list to then be assigned to a weapon
+function randomizeRoomsList(){
+	for (let i = roomsList.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
+    // swap elements array[i] and array[j]
+    // same can be written as:
+    // let t = array[i]; array[i] = array[j]; array[j] = t
+    [roomsList[i], roomsList[j]] = [roomsList[j], roomsList[i]];
+  }
+}
+
+
+//assigning weapons to rooms
+function weaponAssignments() {
+	randomizeRoomsList();
+	roomsList.forEach(function(e){
+		roomWeaponsList.push([e, "q-w34095-340958-sdf0983f"]);
+	});
+	randomizeWeaponList();
+	for (let i=0; i<weaponsList.length; i++){
+		roomWeaponsList[i][1] = weaponsList[i];
+	}
 
 }
 
@@ -204,6 +290,42 @@ function getPair(){
 	}
 }
 
+//settings change when clicking a room button, also changes status based on number of clicks
+function enterRoom(){
+	toggleHide(room);
+	toggleHide(roomChoice);
+	// toggleHide(declarationOfMurder);
+	toggleHide(murderDiv);
+	randomizeRoomGuest();
+	//keeps track of how far along in the game you are and changes murderer behavior
+	clickCount++;
+	if (clickCount > 20 && clickCount < 30){
+		suspicious.classList.remove("hide");
+	} else if (clickCount >= 30){
+		suspicious.classList.add("hide");
+		stalker.classList.remove("hide");
+	}
+
+	//determines which weapon goes into a room based on the roomsList and weaponsList arrays
+	for (i=0; i<roomsList.length; i++){
+		if (roomsList[i] === currentRoom){
+			currentWeapon = weaponsList[i];
+		}
+	}
+	//if there is no weapon assigned to that room it assigns it to be nothing
+	if (currentWeapon === "q-w34095-340958-sdf0983f" || currentWeapon === undefined){
+		currentWeapon = "nothing";
+	}
+
+	for (i=0; i<roomsList.length; i++){
+		if (roomsList[i] === currentRoom && currentRoom === murderRoom){
+			floorStatus = "There's blood on the floor! This must be where the murder happened!";
+		} else if (roomsList[i] === currentRoom && currentRoom !== murderRoom){
+			floorStatus = "There is nothing on the floor.";
+		}
+	}
+
+}
 
 
 //toggles the hide class

@@ -1,78 +1,114 @@
 <!DOCTYPE html>
 <html>
-<head> 
-	<title>Sleuth</title>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="style.css">
+<head>
+    <title>Sleuth</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="style.css">
 
 </head>
 <body>
-	<section id="header">
-		<div class="container=fluid container py-5">
-			<div class="row justify-content-center">
-				<div class="text-center">
-					<h1>Sleuth Game</h1>
-				</div>
-			</div>
-			<div class="row justify-content-center mt-5">
-				<button id = "startButton" class= "btn btn-info">Start Game</button>
-			</div>
-			<div class="row justify-content-center">
-				<button id="resetButton" class = "btn btn-info hide">Reset
-				</button>
-			</div>
-		</div>
-	</section>
-
-	<section>
-		<div id="enterGuestNames" class="containerfluid container hide">
-			<div class="row justify-content-center mt-5">
-				<h2 id="guestH1" class="pr-3">
-					Enter 
-					<span id="guestCounter">7</span> 
-					guest names</h2>
-				<input id="addGuest" type="text" placeholder="" required>
-				<button id="guestNameBtn" class="btn btn-primary">OK</button>
-			</div>
-			<div class="row justify-content-center mt-5">
-				<h2 id="printList"></h2>
-			</div>
-			<div class="row justify-content-center mt-5">
-				<button id = "continue1" class= "btn btn-info hide">Continue</button>
-			</div>
-		</div>
-	</section>
+    <section id="header">
+        <div class="container=fluid container py-5">
+            <div class="row justify-content-center">
+                <div class="text-center">
+                    <h1>Sleuth Game</h1>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-5">
+                <button id="startButton" class="btn btn-info">Start Game</button>
+            </div>
+            <div class="row justify-content-center">
+                <button id="resetButton" class="btn btn-info hide">
+                    Reset
+                </button>
+            </div>
+        </div>
+    </section>
 
     <section>
-        <div id ="murderDiv" class="containerfluid container hide">
+        <div id="enterGuestNames" class="containerfluid container hide">
+            <div class="row justify-content-center mt-5">
+                <h2 id="guestH1" class="pr-3">
+                    Enter
+                    <span id="guestCounter">7</span>
+                    guest names
+                </h2>
+                <input id="addGuest" type="text" placeholder="" required>
+                <button id="guestNameBtn" class="btn btn-primary">OK</button>
+            </div>
+            <div class="row justify-content-center mt-5">
+                <h2 id="printList"></h2>
+            </div>
+            <div class="row justify-content-center mt-5">
+                <button id="continue1" class="btn btn-info hide">Continue</button>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div id="murderDiv" class="containerfluid container hide">
             <div class="row justify-content-center mt-5">
                 <h2 id="declarationOfMurder"></h2>
             </div>
             <div class="row justify-content-center mt-5">
-            	<div id="roomChoice">
-            		<button id="loungeBtn" class="btn btn-secondary">Lounge</button>
-            		<button id="diningRoomBtn" class="btn btn-secondary">Dining Room</button>
-            		<button id="ktichenBtn" class="btn btn-secondary">Kitchen</button>
-            	</div>
+                <div id="roomChoice">
+                    <button id="loungeBtn" class="btn btn-secondary">Lounge</button>
+                    <button id="diningRoomBtn" class="btn btn-secondary">Dining Room</button>
+                    <button id="kitchenBtn" class="btn btn-secondary">Kitchen</button>
+                </div>
             </div>
 
         </div>
     </section>
 
-    <!-- LOUNGE -->
+    <!-- Room -->
     <section>
-    	<div id="room" class="containerfluid container hide">
-    		<div class="row justify-content-center mt-5">
-    			<h2 id="roomDescription"></h2>
-    		</div>
-    		<div class="row justify-content-around mt-5">
-    			<button id = "question" class="btn btn-secondary">Question Suspect</button>
-    			<button id = "examineWeapon" class="btn btn-secondary">Examine Weapon</button>
-    			<button id = "examineFloor" class="btn btn-secondary">Examine Floor</button>
-    			<button id = "goBack" class="btn btn-secondary">Go Back</button>
-    		</div>
-    	</div>
+        <div id="room" class="containerfluid container hide">
+            <div class="row justify-content-center mt-5">
+                <h2 id="roomDescription"></h2>
+            </div>
+            <div class="row justify-content-around mt-5">
+                <button id="question" class="btn btn-secondary">Question Suspect</button>
+                <button id="examineWeapon" class="btn btn-secondary">Examine Weapon</button>
+                <button id="examineFloor" class="btn btn-secondary">Examine Floor</button>
+                <button id="goBack" class="btn btn-secondary">Go Back</button>
+            </div>
+        </div>
     </section>
+
+    <section>
+        <div id="suspicious" class="containerfluid container hide">
+            <div class="row justify-content-center mt-5">
+                <h2>The muderer is now suspicious of your investigation!</h2>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section>
+        <div id="stalker" class="containerfluid container hide">
+            <div class="row justify-content-center mt-5">
+                <h2>The muderer is now stalking you!</h2>
+            </div>
+        </div>
+    </section>
+
+
+    <section>
+        <div id="finalAccusationSection" class="containerfluid container hide">
+            <div id="accuse" class="row justify-content-center mt-5">
+                <button id="accuseBtn" class="btn btn-info">Final Accusation</button>
+            </div>
+            <div id="finalAccusation" class="row justify-content-center mt-5 hide">
+                <h2>Who did it?</h2>
+                <input id="whoIsMurderer" type="text">
+                <button id="whoIsMurdererBtn" class="btn btn-primary">OK</button>
+            </div>
+        </div>
+    </section>
+
+
 
 
 
